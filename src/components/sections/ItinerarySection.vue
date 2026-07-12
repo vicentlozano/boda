@@ -1,6 +1,9 @@
 <script setup>
+import { useLocale } from '@/composables/useLocale'
 import { wedding } from '@/config/wedding'
 import SectionCard from '@/components/layout/SectionCard.vue'
+
+const { t } = useLocale()
 
 const icons = {
   departure: '🏠',
@@ -18,10 +21,10 @@ const icons = {
 
 <template>
   <SectionCard>
-    <h2 class="itinerary__title">Itinerario de actividades</h2>
+    <h2 class="itinerary__title">{{ t.itinerary.title }}</h2>
 
     <ol class="itinerary__list">
-      <li v-for="(item, index) in wedding.itinerary" :key="index" class="itinerary__item">
+      <li v-for="(item, index) in wedding.itinerary" :key="item.key" class="itinerary__item">
         <div class="itinerary__marker">
           <span class="itinerary__icon">{{ icons[item.icon] ?? '•' }}</span>
           <span v-if="index < wedding.itinerary.length - 1" class="itinerary__line" />
@@ -29,7 +32,7 @@ const icons = {
 
         <div class="itinerary__content">
           <time class="itinerary__time">{{ item.time }}</time>
-          <p class="itinerary__label">{{ item.label }}</p>
+          <p class="itinerary__label">{{ t.itinerary.items[item.key] }}</p>
         </div>
       </li>
     </ol>

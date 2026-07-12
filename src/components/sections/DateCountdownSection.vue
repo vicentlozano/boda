@@ -1,7 +1,10 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useLocale } from '@/composables/useLocale'
 import { wedding } from '@/config/wedding'
 import SectionCard from '@/components/layout/SectionCard.vue'
+
+const { t } = useLocale()
 
 const now = ref(Date.now())
 let intervalId
@@ -41,36 +44,36 @@ onUnmounted(() => {
 <template>
   <SectionCard>
     <div class="date">
-      <span class="date__month">{{ wedding.date.month }}</span>
-      <span class="date__day-name">{{ wedding.date.dayName }}</span>
+      <span class="date__month">{{ t.date.month }}</span>
+      <span class="date__day-name">{{ t.date.dayName }}</span>
       <span class="date__day">{{ wedding.date.day }}</span>
       <span class="date__year">{{ wedding.date.year }}</span>
     </div>
 
     <div class="countdown">
-      <p class="countdown__label">Faltan</p>
+      <p class="countdown__label">{{ t.countdown.label }}</p>
 
-      <div v-if="timeLeft.expired" class="countdown__expired">¡Hoy es el gran día!</div>
+      <div v-if="timeLeft.expired" class="countdown__expired">{{ t.countdown.expired }}</div>
 
       <div v-else class="countdown__grid">
         <div class="countdown__unit">
           <span class="countdown__value">{{ pad(timeLeft.days) }}</span>
-          <span class="countdown__name">Días</span>
+          <span class="countdown__name">{{ t.countdown.days }}</span>
         </div>
         <span class="countdown__sep">:</span>
         <div class="countdown__unit">
           <span class="countdown__value">{{ pad(timeLeft.hours) }}</span>
-          <span class="countdown__name">Hrs</span>
+          <span class="countdown__name">{{ t.countdown.hours }}</span>
         </div>
         <span class="countdown__sep">:</span>
         <div class="countdown__unit">
           <span class="countdown__value">{{ pad(timeLeft.minutes) }}</span>
-          <span class="countdown__name">Min</span>
+          <span class="countdown__name">{{ t.countdown.minutes }}</span>
         </div>
         <span class="countdown__sep">:</span>
         <div class="countdown__unit">
           <span class="countdown__value">{{ pad(timeLeft.seconds) }}</span>
-          <span class="countdown__name">Seg</span>
+          <span class="countdown__name">{{ t.countdown.seconds }}</span>
         </div>
       </div>
     </div>

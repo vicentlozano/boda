@@ -1,7 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useLocale } from '@/composables/useLocale'
 import { wedding } from '@/config/wedding'
+import { resolvePublicAsset } from '@/utils/assets'
 import SectionCard from '@/components/layout/SectionCard.vue'
+
+const { t } = useLocale()
+const audioSrc = computed(() => resolvePublicAsset(wedding.music.src))
 
 const audioRef = ref(null)
 const isPlaying = ref(false)
@@ -21,12 +26,12 @@ function togglePlay() {
 
 <template>
   <SectionCard>
-    <p class="music__intro">{{ wedding.invitation }}</p>
+    <p class="music__intro">{{ t.invitation }}</p>
 
     <div class="music__player">
-      <p class="music__title">{{ wedding.music.title }}</p>
+      <p class="music__title">{{ t.music.title }}</p>
 
-      <audio ref="audioRef" :src="wedding.music.src" preload="none" @ended="isPlaying = false" />
+      <audio ref="audioRef" :src="audioSrc" preload="none" @ended="isPlaying = false" />
 
       <div class="music__controls">
         <button type="button" class="music__btn" aria-label="Anterior" disabled>⏮</button>

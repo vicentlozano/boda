@@ -1,21 +1,24 @@
 <script setup>
+import { useLocale } from '@/composables/useLocale'
 import PhotoFrame from '@/components/ui/PhotoFrame.vue'
 import SectionCard from '@/components/layout/SectionCard.vue'
 
+const { t } = useLocale()
+
 const photos = [
-  { alt: 'Foto 1', src: 'public/images/PHOTO-2026-07-12-21-13-15.jpg' },
-  { alt: 'Foto 2', src: '' },
-  { alt: 'Foto 3', src: '' },
+  { src: 'public/images/PHOTO-2026-07-12-21-13-15.jpg' },
+  { src: '' },
+  { src: '' },
 ]
 </script>
 
 <template>
   <SectionCard :with-leaves="false">
-    <PhotoFrame :alt="photos[0].alt" :src="photos[0].src" tall />
+    <PhotoFrame :alt="`${t.photos.gallery} 1`" :src="photos[0].src" tall />
 
     <div class="gallery__row">
-      <PhotoFrame :alt="photos[1].alt" :src="photos[1].src" />
-      <PhotoFrame :alt="photos[2].alt" :src="photos[2].src" />
+      <PhotoFrame :alt="`${t.photos.gallery} 2`" :src="photos[1].src" />
+      <PhotoFrame :alt="`${t.photos.gallery} 3`" :src="photos[2].src" />
     </div>
   </SectionCard>
 </template>

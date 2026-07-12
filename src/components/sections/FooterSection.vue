@@ -1,11 +1,13 @@
 <script setup>
-import { wedding } from '@/config/wedding'
+import { useLocale } from '@/composables/useLocale'
 import SectionCard from '@/components/layout/SectionCard.vue'
+
+const { t } = useLocale()
 </script>
 
 <template>
   <SectionCard>
-    <p class="footer__message">{{ wedding.footer.message }}</p>
+    <p class="footer__message">{{ t.footer.message }}</p>
   </SectionCard>
 </template>
 

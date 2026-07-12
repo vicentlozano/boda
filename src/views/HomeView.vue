@@ -36,6 +36,6 @@ import FooterSection from '@/components/sections/FooterSection.vue'
   width: 100%;
   max-width: var(--page-max-width);
   margin: 0 auto;
-  padding: 1.5rem 1rem 2.5rem;
+  padding: 0.35rem 1rem 2.5rem;
 }
 </style>

@@ -1,25 +1,28 @@
 <script setup>
+import { useLocale } from '@/composables/useLocale'
 import { wedding } from '@/config/wedding'
 import SectionCard from '@/components/layout/SectionCard.vue'
+
+const { t } = useLocale()
 </script>
 
 <template>
   <SectionCard>
-    <h2 class="gifts__title">{{ wedding.gifts.title }}</h2>
+    <h2 class="gifts__title">{{ t.gifts.title }}</h2>
 
     <div class="gifts__transfer">
-      <h3 class="gifts__subtitle">{{ wedding.gifts.transferLabel }}</h3>
+      <h3 class="gifts__subtitle">{{ t.gifts.transferLabel }}</h3>
       <dl class="gifts__details">
         <div>
-          <dt>Banco</dt>
+          <dt>{{ t.gifts.bank }}</dt>
           <dd>{{ wedding.gifts.bankName }}</dd>
         </div>
         <div>
-          <dt>Titular</dt>
+          <dt>{{ t.gifts.holder }}</dt>
           <dd>{{ wedding.gifts.accountHolder }}</dd>
         </div>
         <div>
-          <dt>Cuenta</dt>
+          <dt>{{ t.gifts.account }}</dt>
           <dd>{{ wedding.gifts.accountNumber }}</dd>
         </div>
       </dl>
@@ -48,31 +51,6 @@ import SectionCard from '@/components/layout/SectionCard.vue'
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-.gifts__qr {
-  margin: 1.25rem auto 0;
-  width: 140px;
-  height: 140px;
-}
-
-.gifts__qr img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.gifts__qr-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  border: 2px dashed var(--color-border);
-  border-radius: 8px;
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
   color: var(--color-text-muted);
 }
 

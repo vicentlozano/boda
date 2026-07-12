@@ -16,6 +16,10 @@ defineProps({
     type: String,
     required: true,
   },
+  viewMapLabel: {
+    type: String,
+    required: true,
+  },
 })
 </script>
 
@@ -28,7 +32,7 @@ defineProps({
     <p class="location__address">{{ address }}</p>
 
     <a class="location__link" :href="mapsUrl" target="_blank" rel="noopener noreferrer">
-      Ver ubicación
+      {{ viewMapLabel }}
     </a>
   </article>
 </template>

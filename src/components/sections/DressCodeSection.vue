@@ -1,18 +1,20 @@
 <script setup>
-import { wedding } from '@/config/wedding'
+import { useLocale } from '@/composables/useLocale'
 import SectionCard from '@/components/layout/SectionCard.vue'
+
+const { t } = useLocale()
 </script>
 
 <template>
   <SectionCard>
-    <h2 class="dresscode__title">{{ wedding.dressCode.title }}</h2>
+    <h2 class="dresscode__title">{{ t.dressCode.title }}</h2>
 
     <div class="dresscode__icons" aria-hidden="true">
       <span class="dresscode__icon">🤵</span>
       <span class="dresscode__icon">👗</span>
     </div>
 
-    <p class="dresscode__description">{{ wedding.dressCode.description }}</p>
+    <p class="dresscode__description">{{ t.dressCode.description }}</p>
   </SectionCard>
 </template>
 

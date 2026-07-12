@@ -1,22 +1,24 @@
 <script setup>
-import { wedding } from '@/config/wedding'
+import { useLocale } from '@/composables/useLocale'
 import PhotoFrame from '@/components/ui/PhotoFrame.vue'
 import SectionCard from '@/components/layout/SectionCard.vue'
+
+const { t } = useLocale()
 </script>
 
 <template>
   <SectionCard :with-leaves="false">
-    <PhotoFrame alt="Foto de la pareja" tall src="public/images/PHOTO-2026-07-12-21-02-59.jpg" />
+    <PhotoFrame :alt="t.photos.hero" tall src="public/images/PHOTO-2026-07-12-21-02-59.jpg" />
 
     <blockquote class="hero__quote">
-      <p>{{ wedding.quote.text }}</p>
-      <cite>{{ wedding.quote.reference }}</cite>
+      <p>{{ t.quote.text }}</p>
+      <cite>{{ t.quote.reference }}</cite>
     </blockquote>
 
     <h1 class="hero__names">
-      {{ wedding.couple.bride }}
+      {{ t.couple.bride }}
       <span class="hero__ampersand">&</span>
-      {{ wedding.couple.groom }}
+      {{ t.couple.groom }}
     </h1>
   </SectionCard>
 </template>

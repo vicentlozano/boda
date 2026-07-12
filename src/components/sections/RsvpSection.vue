@@ -1,7 +1,10 @@
 <script setup>
 import { ref } from 'vue'
+import { useLocale } from '@/composables/useLocale'
 import { wedding } from '@/config/wedding'
 import SectionCard from '@/components/layout/SectionCard.vue'
+
+const { t } = useLocale()
 
 const showForm = ref(false)
 const submitted = ref(false)
@@ -13,20 +16,23 @@ const form = ref({
   email: '',
   attending: 'yes',
   guests: 1,
+  mainCourse: 'fish',
   message: '',
 })
 
 function buildPayload() {
-  const attending = form.value.attending === 'yes' ? 'Sí, asistiré' : 'No podré asistir'
+  const rsvp = t.value.rsvp
+  const attending = form.value.attending === 'yes' ? rsvp.attendingYesValue : rsvp.attendingNoValue
 
   return {
     name: form.value.name,
     email: form.value.email,
     _replyto: form.value.email,
-    _subject: `RSVP boda Teresa & Vicent: ${form.value.name}`,
+    _subject: `${rsvp.subject}: ${form.value.name}`,
     attending,
+    mainCourse: form.value.attending === 'yes' ? form.value.mainCourse : '',
     guests: form.value.attending === 'yes' ? form.value.guests : 0,
-    message: form.value.message || '(sin mensaje)',
+    message: form.value.message || rsvp.noMessage,
   }
 }
 
@@ -50,10 +56,9 @@ async function handleSubmit() {
     }
 
     const data = await response.json().catch(() => ({}))
-    errorMessage.value =
-      data.error || 'No se pudo enviar la confirmación. Inténtalo de nuevo en unos minutos.'
+    errorMessage.value = data.error || t.value.rsvp.errorSubmit
   } catch {
-    errorMessage.value = 'Error de conexión. Comprueba tu internet e inténtalo de nuevo.'
+    errorMessage.value = t.value.rsvp.errorConnection
   } finally {
     submitting.value = false
   }
@@ -62,78 +67,74 @@ async function handleSubmit() {
 
 <template>
   <SectionCard>
-    <h2 class="rsvp__title">{{ wedding.rsvp.title }}</h2>
+    <h2 class="rsvp__title">{{ t.rsvp.title }}</h2>
 
     <template v-if="submitted">
-      <p class="rsvp__success">¡Gracias por confirmar! Nos vemos pronto.</p>
+      <p class="rsvp__success">{{ t.rsvp.success }}</p>
     </template>
 
     <template v-else-if="!showForm">
       <button type="button" class="rsvp__button" @click="showForm = true">
-        {{ wedding.rsvp.buttonLabel }}
+        {{ t.rsvp.buttonLabel }}
       </button>
     </template>
 
     <form v-else class="rsvp__form" @submit.prevent="handleSubmit">
       <label>
-        Nombre completo
+        {{ t.rsvp.fullName }}
         <input v-model="form.name" type="text" required />
       </label>
 
       <label>
-        Email
+        {{ t.rsvp.email }}
         <input v-model="form.email" type="email" required />
       </label>
 
       <fieldset>
-        <legend>¿Asistirás?</legend>
+        <legend>{{ t.rsvp.attending }}</legend>
         <label class="rsvp__radio">
           <input v-model="form.attending" type="radio" value="yes" />
-          Sí, ahí estaré
+          {{ t.rsvp.attendingYes }}
         </label>
         <label class="rsvp__radio">
           <input v-model="form.attending" type="radio" value="no" />
-          No podré asistir
+          {{ t.rsvp.attendingNo }}
         </label>
       </fieldset>
-      <fieldset>
-        <legend>Plato principal</legend>
+      <fieldset v-if="form.attending === 'yes'">
+        <legend>{{ t.rsvp.mainCourse }}</legend>
         <label class="rsvp__radio">
           <input v-model="form.mainCourse" type="radio" value="fish" />
-          Pescado (Rodaballo)
+          {{ t.rsvp.fish }}
         </label>
         <label class="rsvp__radio">
           <input v-model="form.mainCourse" type="radio" value="meat" />
-          Carne (Entrecot)
+          {{ t.rsvp.meat }}
         </label>
         <label class="rsvp__radio">
           <input v-model="form.mainCourse" type="radio" value="vegetarian" />
-          Vegetariano
+          {{ t.rsvp.vegetarian }}
         </label>
       </fieldset>
 
       <label v-if="form.attending === 'yes'">
-        Número de acompañantes (incluyéndote)
+        {{ t.rsvp.guests }}
         <input v-model.number="form.guests" type="number" min="1" max="10" />
       </label>
 
       <label>
-        Mensaje (alergias, comentarios…)
+        {{ t.rsvp.message }}
         <textarea v-model="form.message" rows="3" />
       </label>
 
       <button type="submit" class="rsvp__button" :disabled="submitting">
-        {{ submitting ? 'Enviando…' : 'Enviar confirmación' }}
+        {{ submitting ? t.rsvp.submitting : t.rsvp.submit }}
       </button>
 
       <p v-if="errorMessage" class="rsvp__error" role="alert">{{ errorMessage }}</p>
-
-      <p v-if="!wedding.rsvp.formspreeId" class="rsvp__config-hint">
-        Configura <code>rsvp.formspreeId</code> en <code>src/config/wedding.js</code>
-      </p>
     </form>
 
-    <p class="rsvp__note">{{ wedding.rsvp.note }}</p>
+    <p class="rsvp__note">{{ t.rsvp.note }}</p>
   </SectionCard>
 </template>
 

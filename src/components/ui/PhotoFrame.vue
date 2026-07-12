@@ -1,5 +1,8 @@
 <script setup>
-defineProps({
+import { computed } from 'vue'
+import { resolvePublicAsset } from '@/utils/assets'
+
+const props = defineProps({
   src: {
     type: String,
     default: '',
@@ -13,11 +16,13 @@ defineProps({
     default: false,
   },
 })
+
+const resolvedSrc = computed(() => resolvePublicAsset(props.src))
 </script>
 
 <template>
   <div class="photo" :class="{ 'photo--tall': tall }">
-    <img v-if="src" :src="src" :alt="alt" />
+    <img v-if="resolvedSrc" :src="resolvedSrc" :alt="alt" />
     <div v-else class="photo__placeholder">
       <span>{{ alt }}</span>
     </div>
