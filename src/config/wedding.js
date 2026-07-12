@@ -59,7 +59,7 @@ export const wedding = {
     title: 'Sugerencia de regalos',
     transferLabel: 'Transferencia',
     bankName: 'CaixaBank',
-    accountHolder: 'Vicent & Teresa',
+    accountHolder: 'Teresa & Vicent',
     accountNumber: 'ES66 2100 4241 4322 0012 9546',
   },
 
