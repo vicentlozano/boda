@@ -1,0 +1,17 @@
+:root {
+  --color-sage: #8a9b7a;
+  --color-sage-dark: #6b7d62;
+  --color-cream: #f7f4ee;
+  --color-white: #ffffff;
+  --color-text: #3d3d3d;
+  --color-text-muted: #6b6b6b;
+  --color-border: #e0ddd6;
+
+  --font-script: 'Great Vibes', cursive;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Nunito Sans', system-ui, sans-serif;
+
+  --page-max-width: 420px;
+  --card-radius: 12px;
+  --section-gap: 1.5rem;
+}
