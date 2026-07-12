@@ -5,6 +5,6 @@ import SectionCard from '@/components/layout/SectionCard.vue'
 
 <template>
   <SectionCard :with-leaves="false">
-    <PhotoFrame alt="Foto de despedida" tall />
+    <PhotoFrame alt="Foto principal" tall src="public/images/d68899c5-87b4-45ff-affe-b00a4a355f32.JPG" />
   </SectionCard>
 </template>

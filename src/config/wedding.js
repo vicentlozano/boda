@@ -1,7 +1,7 @@
 export const wedding = {
   couple: {
-    bride: 'Vicent',
-    groom: 'Teresa',
+    bride: 'Teresa',
+    groom: 'Vicent',
   },
 
   quote: {

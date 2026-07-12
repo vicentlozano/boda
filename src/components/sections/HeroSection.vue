@@ -6,7 +6,7 @@ import SectionCard from '@/components/layout/SectionCard.vue'
 
 <template>
   <SectionCard :with-leaves="false">
-    <PhotoFrame alt="Foto de la pareja" tall />
+    <PhotoFrame alt="Foto de la pareja" tall src="public/images/PHOTO-2026-07-12-21-02-59.jpg" />
 
     <blockquote class="hero__quote">
       <p>{{ wedding.quote.text }}</p>

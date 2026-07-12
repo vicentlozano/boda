@@ -3,7 +3,7 @@ import PhotoFrame from '@/components/ui/PhotoFrame.vue'
 import SectionCard from '@/components/layout/SectionCard.vue'
 
 const photos = [
-  { alt: 'Foto 1', src: '' },
+  { alt: 'Foto 1', src: 'public/images/PHOTO-2026-07-12-21-13-15.jpg' },
   { alt: 'Foto 2', src: '' },
   { alt: 'Foto 3', src: '' },
 ]
