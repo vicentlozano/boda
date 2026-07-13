@@ -1,7 +1,6 @@
 <script setup>
 import HeroSection from '@/components/sections/HeroSection.vue'
 import InvitationSection from '@/components/sections/InvitationSection.vue'
-import DateCountdownSection from '@/components/sections/DateCountdownSection.vue'
 import PhotoFadeSection from '@/components/sections/PhotoFadeSection.vue'
 import LocationsSection from '@/components/sections/LocationsSection.vue'
 import ItinerarySection from '@/components/sections/ItinerarySection.vue'
@@ -15,7 +14,6 @@ import FooterSection from '@/components/sections/FooterSection.vue'
   <main class="home">
     <HeroSection />
     <InvitationSection />
-    <DateCountdownSection />
     <PhotoFadeSection />
     <LocationsSection />
     <ItinerarySection />

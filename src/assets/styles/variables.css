@@ -13,4 +13,6 @@
 
   --page-max-width: 420px;
   --section-gap: 0;
+  --section-divider-gap: 1.75rem;
+  --section-divider-padding: 1.5rem;
 }

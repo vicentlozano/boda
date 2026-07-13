@@ -1,13 +1,18 @@
 <script setup>
+import { computed } from 'vue'
 import { useLocale } from '@/composables/useLocale'
-import PhotoFrame from '@/components/ui/PhotoFrame.vue'
+import { resolvePublicAsset } from '@/utils/assets'
 import SectionCard from '@/components/layout/SectionCard.vue'
 
 const { t } = useLocale()
+
+const heroStyle = computed(() => ({
+  backgroundImage: `url(${resolvePublicAsset('public/images/magnific__quita-el-textp__30618.png')})`,
+}))
 </script>
 
 <template>
-  <SectionCard variant="sage" class="hero">
+  <SectionCard variant="cream" class="hero" :style="heroStyle">
     <div class="hero__text">
       <h1 class="hero__names">
         {{ t.couple.bride }}
@@ -20,26 +25,30 @@ const { t } = useLocale()
         <cite>{{ t.quote.reference }}</cite>
       </blockquote>
     </div>
-
-    <div class="hero__photo">
-      <PhotoFrame
-        :alt="t.photos.hero"
-        tall
-        tone="sage"
-        :zoom="1.16"
-        src="public/images/PHOTO-2026-07-12-21-02-59.jpg"
-      />
-    </div>
   </SectionCard>
 </template>
 
 <style scoped>
+.hero {
+  background-color: var(--color-cream);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .hero :deep(.section-card__content) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: min(115vw, 680px);
   padding-top: 3.25rem;
+  padding-bottom: 3.5rem;
 }
 
 .hero__text {
-  padding: 2.3rem  0.25rem;
+  max-width: 88%;
+  margin: 0 auto;
+  padding: 0 0.25rem;
 }
 
 .hero__names {
@@ -72,9 +81,5 @@ const { t } = useLocale()
   margin-top: 0.5rem;
   font-style: normal;
   font-size: 0.85rem;
-}
-
-.hero__photo {
-  margin: 1.75rem -1.75rem -2.25rem;
 }
 </style>
