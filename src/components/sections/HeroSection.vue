@@ -1,18 +1,12 @@
 <script setup>
-import { computed } from 'vue'
 import { useLocale } from '@/composables/useLocale'
-import { resolvePublicAsset } from '@/utils/assets'
 import SectionCard from '@/components/layout/SectionCard.vue'
 
 const { t } = useLocale()
-
-const heroStyle = computed(() => ({
-  backgroundImage: `url(${resolvePublicAsset('public/images/magnific__quita-el-textp__30618.png')})`,
-}))
 </script>
 
 <template>
-  <SectionCard variant="cream" class="hero" :style="heroStyle">
+  <SectionCard variant="cream" floral class="hero">
     <div class="hero__text">
       <h1 class="hero__names">
         {{ t.couple.bride }}
@@ -29,13 +23,6 @@ const heroStyle = computed(() => ({
 </template>
 
 <style scoped>
-.hero {
-  background-color: var(--color-cream);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .hero :deep(.section-card__content) {
   display: flex;
   flex-direction: column;

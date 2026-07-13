@@ -6,7 +6,7 @@ export const wedding = {
   },
 
   music: {
-    src: 'public/audio/cancion.mp3',
+    src: 'public/audio/exoplaneta.mp3',
   },
 
   locations: [

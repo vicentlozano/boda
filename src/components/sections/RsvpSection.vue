@@ -66,7 +66,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <SectionCard variant="cream">
+  <SectionCard variant="cream" floral-edges floral-position="bottom-left">
     <h2 class="rsvp__title">{{ t.rsvp.title }}</h2>
 
     <template v-if="submitted">

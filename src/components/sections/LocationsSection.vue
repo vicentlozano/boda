@@ -16,7 +16,7 @@ const locations = computed(() =>
 </script>
 
 <template>
-  <SectionCard variant="cream">
+  <SectionCard variant="cream" floral-edges floral-position="top-left">
     <LocationCard
       v-for="location in locations"
       :key="location.id"

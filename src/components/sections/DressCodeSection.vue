@@ -6,7 +6,7 @@ const { t } = useLocale()
 </script>
 
 <template>
-  <SectionCard variant="cream">
+  <SectionCard variant="cream" floral-edges floral-position="bottom-right">
     <h2 class="dresscode__title">{{ t.dressCode.title }}</h2>
 
     <div class="dresscode__icons" aria-hidden="true">
