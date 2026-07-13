@@ -42,7 +42,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <SectionCard>
+  <SectionCard variant="sage">
     <div class="date">
       <span class="date__month">{{ t.date.month }}</span>
       <span class="date__day-name">{{ t.date.dayName }}</span>
@@ -174,6 +174,6 @@ onUnmounted(() => {
   margin-top: 0.75rem;
   font-family: var(--font-script);
   font-size: 2rem;
-  color: var(--color-sage-dark);
+  color: var(--color-text);
 }
 </style>

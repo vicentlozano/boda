@@ -8,18 +8,24 @@
   padding: 0;
 }
 
+html {
+  background-color: var(--color-cream);
+  color-scheme: light;
+}
+
 body {
   min-height: 100vh;
   font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.6;
   color: var(--color-text);
-  background-color: var(--color-sage);
+  background-color: var(--color-cream);
   -webkit-font-smoothing: antialiased;
 }
 
 #app {
   min-height: 100vh;
+  background-color: var(--color-cream);
 }
 
 img {

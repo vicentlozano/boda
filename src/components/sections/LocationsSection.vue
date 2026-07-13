@@ -16,7 +16,7 @@ const locations = computed(() =>
 </script>
 
 <template>
-  <SectionCard>
+  <SectionCard variant="cream">
     <LocationCard
       v-for="location in locations"
       :key="location.id"

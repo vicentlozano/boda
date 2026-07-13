@@ -6,7 +6,7 @@ const { t } = useLocale()
 </script>
 
 <template>
-  <SectionCard>
+  <SectionCard variant="sage">
     <p class="footer__message">{{ t.footer.message }}</p>
   </SectionCard>
 </template>

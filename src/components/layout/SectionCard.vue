@@ -1,19 +1,22 @@
 <script setup>
-import LeafDecoration from '@/components/ui/LeafDecoration.vue'
-
 defineProps({
-  withLeaves: {
+  variant: {
+    type: String,
+    default: 'cream',
+    validator: (value) => ['cream', 'sage'].includes(value),
+  },
+  flush: {
     type: Boolean,
-    default: true,
+    default: false,
   },
 })
 </script>
 
 <template>
-  <section class="section-card">
-    <LeafDecoration v-if="withLeaves" class="section-card__leaf section-card__leaf--tl" />
-    <LeafDecoration v-if="withLeaves" class="section-card__leaf section-card__leaf--br" flip />
-
+  <section
+    class="section-card"
+    :class="[`section-card--${variant}`, { 'section-card--flush': flush }]"
+  >
     <div class="section-card__content">
       <slot />
     </div>
@@ -23,29 +26,33 @@ defineProps({
 <style scoped>
 .section-card {
   position: relative;
-  background: var(--color-cream);
-  border-radius: var(--card-radius);
+  width: 100%;
   overflow: hidden;
+}
+
+.section-card--cream {
+  background: var(--color-cream);
+  color: var(--color-text);
+  --color-text: #3a3a3a;
+  --color-text-muted: #666666;
+  --color-border: #e4e0d8;
+}
+
+.section-card--sage {
+  background: var(--color-sage);
+  color: var(--color-white);
+  --color-text: #ffffff;
+  --color-text-muted: rgba(255, 255, 255, 0.88);
+  --color-border: rgba(255, 255, 255, 0.28);
 }
 
 .section-card__content {
   position: relative;
   z-index: 1;
-  padding: 2rem 1.5rem;
+  padding: 2.25rem 1.75rem;
 }
 
-.section-card__leaf {
-  position: absolute;
-  z-index: 0;
-}
-
-.section-card__leaf--tl {
-  top: -8px;
-  left: -8px;
-}
-
-.section-card__leaf--br {
-  bottom: -8px;
-  right: -8px;
+.section-card--flush .section-card__content {
+  padding: 0;
 }
 </style>

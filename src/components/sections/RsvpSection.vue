@@ -66,7 +66,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <SectionCard>
+  <SectionCard variant="cream">
     <h2 class="rsvp__title">{{ t.rsvp.title }}</h2>
 
     <template v-if="submitted">
@@ -172,7 +172,7 @@ async function handleSubmit() {
   text-align: center;
   font-family: var(--font-serif);
   font-size: 1.1rem;
-  color: var(--color-sage-dark);
+  color: var(--color-text);
 }
 
 .rsvp__form {

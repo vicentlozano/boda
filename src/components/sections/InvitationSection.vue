@@ -25,7 +25,7 @@ function togglePlay() {
 </script>
 
 <template>
-  <SectionCard>
+  <SectionCard variant="cream">
     <p class="music__intro">{{ t.invitation }}</p>
 
     <div class="music__player">

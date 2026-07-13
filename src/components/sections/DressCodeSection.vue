@@ -6,12 +6,12 @@ const { t } = useLocale()
 </script>
 
 <template>
-  <SectionCard>
+  <SectionCard variant="cream">
     <h2 class="dresscode__title">{{ t.dressCode.title }}</h2>
 
     <div class="dresscode__icons" aria-hidden="true">
       <span class="dresscode__icon">🤵</span>
-      <span class="dresscode__icon">👗</span>
+      <span class="dresscode__icon dresscode__icon--female">👗</span>
     </div>
 
     <p class="dresscode__description">{{ t.dressCode.description }}</p>
@@ -37,6 +37,10 @@ const { t } = useLocale()
 
 .dresscode__icon {
   font-size: 3rem;
+}
+
+.dresscode__icon--female {
+  margin-top: 0.25rem;
 }
 
 .dresscode__description {

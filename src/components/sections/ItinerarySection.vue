@@ -20,7 +20,7 @@ const icons = {
 </script>
 
 <template>
-  <SectionCard>
+  <SectionCard variant="sage">
     <h2 class="itinerary__title">{{ t.itinerary.title }}</h2>
 
     <ol class="itinerary__list">

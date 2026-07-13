@@ -24,9 +24,11 @@ const { locale, t, setLocale } = useLocale()
 .lang-switch {
   display: inline-flex;
   padding: 0.2rem;
-  background: var(--color-cream);
+  background: rgba(246, 243, 239, 0.95);
   border: 1px solid var(--color-border);
   border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
 }
 
 .lang-switch__btn {
@@ -41,7 +43,7 @@ const { locale, t, setLocale } = useLocale()
 }
 
 .lang-switch__btn--active {
-  background: var(--color-sage-dark);
+  background: var(--color-sage);
   color: var(--color-white);
 }
 </style>

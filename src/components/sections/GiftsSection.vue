@@ -7,7 +7,7 @@ const { t } = useLocale()
 </script>
 
 <template>
-  <SectionCard>
+  <SectionCard variant="sage">
     <h2 class="gifts__title">{{ t.gifts.title }}</h2>
 
     <div class="gifts__transfer">

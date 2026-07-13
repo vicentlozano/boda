@@ -18,7 +18,7 @@ export default {
   },
 
   invitation:
-    'Amb l\'amor de les nostres famílies i l\'alegria de compartir les nostres vides, ens complau convidar-vos a celebrar el nostre matrimoni.',
+    'Amb el nostre amor i l\'alegria de compartir les nostres vides, ens complau convidar-vos a celebrar el nostre matrimoni.',
 
   date: {
     month: 'OCTUBRE',
