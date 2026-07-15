@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { Pause, Play, SkipBack, SkipForward } from '@lucide/vue'
 import { useLocale } from '@/composables/useLocale'
 import { wedding } from '@/config/wedding'
 import { resolvePublicAsset } from '@/utils/assets'
@@ -68,11 +69,16 @@ onUnmounted(() => {
       <audio ref="audioRef" :src="audioSrc" preload="none" @ended="isPlaying = false" />
 
       <div class="music__controls">
-        <button type="button" class="music__btn" aria-label="Anterior" disabled>⏮</button>
-        <button type="button" class="music__btn music__btn--play" aria-label="Reproducir" @click="togglePlay">
-          {{ isPlaying ? '⏸' : '▶' }}
+        <button type="button" class="music__btn" aria-label="Anterior" disabled>
+          <SkipBack :size="18" :stroke-width="2" />
         </button>
-        <button type="button" class="music__btn" aria-label="Siguiente" disabled>⏭</button>
+        <button type="button" class="music__btn music__btn--play" aria-label="Reproducir" @click="togglePlay">
+          <Pause v-if="isPlaying" :size="22" :stroke-width="2" />
+          <Play v-else :size="22" :stroke-width="2" />
+        </button>
+        <button type="button" class="music__btn" aria-label="Siguiente" disabled>
+          <SkipForward :size="18" :stroke-width="2" />
+        </button>
       </div>
     </div>
 
@@ -152,6 +158,14 @@ onUnmounted(() => {
   background: rgba(255, 255, 255, 0.14);
   color: var(--color-text);
   font-size: 0.9rem;
+}
+
+.music__btn svg {
+  display: block;
+}
+
+.music__btn--play svg {
+  margin-left: 2px;
 }
 
 .music__btn:disabled {

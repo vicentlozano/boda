@@ -1,4 +1,6 @@
 <script setup>
+import { MapPin } from '@lucide/vue'
+
 defineProps({
   title: {
     type: String,
@@ -25,7 +27,9 @@ defineProps({
 
 <template>
   <article class="location">
-    <div class="location__icon" aria-hidden="true">📍</div>
+    <div class="location__icon" aria-hidden="true">
+      <MapPin :size="24" :stroke-width="1.75" />
+    </div>
 
     <h3 class="location__title">{{ title }}</h3>
     <p class="location__venue">{{ venue }}</p>
@@ -48,8 +52,10 @@ defineProps({
 }
 
 .location__icon {
-  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
   margin-bottom: 0.5rem;
+  color: var(--color-sage-dark);
 }
 
 .location__title {

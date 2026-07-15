@@ -1,4 +1,5 @@
 <script setup>
+import { Flower2 } from '@lucide/vue'
 import { useLocale } from '@/composables/useLocale'
 import SectionCard from '@/components/layout/SectionCard.vue'
 
@@ -16,7 +17,9 @@ const { t } = useLocale()
 
       <blockquote class="hero__quote">
         <p>{{ t.quote.text }}</p>
-        <cite>{{ t.quote.reference }}</cite>
+        <cite class="hero__quote-mark">
+          <Flower2 :size="20" :stroke-width="1.5" aria-hidden="true" />
+        </cite>
       </blockquote>
     </div>
   </SectionCard>
@@ -64,9 +67,10 @@ const { t } = useLocale()
 }
 
 .hero__quote cite {
-  display: block;
+  display: flex;
+  justify-content: center;
   margin-top: 0.5rem;
   font-style: normal;
-  font-size: 0.85rem;
+  color: var(--color-sage-dark);
 }
 </style>

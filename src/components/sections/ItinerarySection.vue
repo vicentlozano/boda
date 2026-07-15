@@ -1,4 +1,15 @@
 <script setup>
+import {
+  Cake,
+  Camera,
+  Church,
+  HandHeart,
+  Home,
+  Landmark,
+  Music2,
+  UtensilsCrossed,
+  Wine,
+} from '@lucide/vue'
 import { useLocale } from '@/composables/useLocale'
 import { wedding } from '@/config/wedding'
 import SectionCard from '@/components/layout/SectionCard.vue'
@@ -6,16 +17,16 @@ import SectionCard from '@/components/layout/SectionCard.vue'
 const { t } = useLocale()
 
 const icons = {
-  departure: '🏠',
-  civil: '🏛️',
-  cocktail: '🥂',
-  dance: '💃',
-  church: '⛪',
-  camera: '📷',
-  cake: '🎂',
-  dinner: '🍽️',
-  toast: '🥂',
-  farewell: '👋',
+  departure: Home,
+  civil: Landmark,
+  cocktail: Wine,
+  dance: Music2,
+  church: Church,
+  camera: Camera,
+  cake: Cake,
+  dinner: UtensilsCrossed,
+  toast: Wine,
+  farewell: HandHeart,
 }
 </script>
 
@@ -26,7 +37,14 @@ const icons = {
     <ol class="itinerary__list">
       <li v-for="(item, index) in wedding.itinerary" :key="item.key" class="itinerary__item">
         <div class="itinerary__marker">
-          <span class="itinerary__icon">{{ icons[item.icon] ?? '•' }}</span>
+          <span class="itinerary__icon">
+            <component
+              :is="icons[item.icon]"
+              :size="16"
+              :stroke-width="1.75"
+              aria-hidden="true"
+            />
+          </span>
           <span v-if="index < wedding.itinerary.length - 1" class="itinerary__line" />
         </div>
 
@@ -77,7 +95,7 @@ const icons = {
   border-radius: 50%;
   background: var(--color-white);
   border: 1px solid var(--color-border);
-  font-size: 0.9rem;
+  color: var(--color-sage-dark);
 }
 
 .itinerary__line {
