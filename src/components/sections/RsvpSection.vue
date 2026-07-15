@@ -15,6 +15,9 @@ function createGuest() {
   return { name: '', mainCourse: 'fish', ageGroup: 'adult' }
 }
 
+const maxGuests = 10
+const guestCountOptions = Array.from({ length: maxGuests }, (_, index) => index + 1)
+
 const form = ref({
   email: '',
   attending: 'yes',
@@ -26,7 +29,7 @@ const form = ref({
 watch(
   () => form.value.guestCount,
   (count) => {
-    const total = Math.min(10, Math.max(1, Number(count) || 1))
+    const total = Math.min(maxGuests, Math.max(1, Number(count) || 1))
     form.value.guestCount = total
 
     while (form.value.guests.length < total) {
@@ -157,7 +160,11 @@ async function handleSubmit() {
       <template v-if="form.attending === 'yes'">
         <label>
           {{ t.rsvp.guests }}
-          <input v-model.number="form.guestCount" type="number" min="1" max="10" required />
+          <select v-model.number="form.guestCount" required>
+            <option v-for="count in guestCountOptions" :key="count" :value="count">
+              {{ count }}
+            </option>
+          </select>
         </label>
 
         <fieldset
@@ -274,6 +281,7 @@ async function handleSubmit() {
 .rsvp__form input[type='text'],
 .rsvp__form input[type='email'],
 .rsvp__form input[type='number'],
+.rsvp__form select,
 .rsvp__form textarea {
   padding: 0.6rem 0.75rem;
   border: 1px solid var(--color-border);
@@ -282,6 +290,14 @@ async function handleSubmit() {
   font-family: inherit;
   font-size: 1rem;
   color: var(--color-text);
+}
+
+.rsvp__form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.25rem;
 }
 
 .rsvp__form fieldset {
