@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useLocale } from '@/composables/useLocale'
 import { wedding } from '@/config/wedding'
 import SectionCard from '@/components/layout/SectionCard.vue'
@@ -11,29 +11,86 @@ const submitted = ref(false)
 const submitting = ref(false)
 const errorMessage = ref('')
 
+function createGuest() {
+  return { name: '', mainCourse: 'fish', ageGroup: 'adult' }
+}
+
 const form = ref({
-  name: '',
   email: '',
   attending: 'yes',
-  guests: 1,
-  mainCourse: 'fish',
+  guestCount: 1,
+  guests: [createGuest()],
   message: '',
 })
+
+watch(
+  () => form.value.guestCount,
+  (count) => {
+    const total = Math.min(10, Math.max(1, Number(count) || 1))
+    form.value.guestCount = total
+
+    while (form.value.guests.length < total) {
+      form.value.guests.push(createGuest())
+    }
+    while (form.value.guests.length > total) {
+      form.value.guests.pop()
+    }
+  },
+)
+
+function guestLabel(index) {
+  if (index === 0) return t.value.rsvp.primaryGuest
+  return t.value.rsvp.guestNumber.replace('{n}', String(index + 1))
+}
+
+function courseLabel(value) {
+  const labels = {
+    fish: t.value.rsvp.fish,
+    meat: t.value.rsvp.meat,
+    vegetarian: t.value.rsvp.vegetarian,
+  }
+  return labels[value] ?? value
+}
+
+function ageLabel(value) {
+  return value === 'child' ? t.value.rsvp.child : t.value.rsvp.adult
+}
 
 function buildPayload() {
   const rsvp = t.value.rsvp
   const attending = form.value.attending === 'yes' ? rsvp.attendingYesValue : rsvp.attendingNoValue
+  const primaryName = form.value.guests[0]?.name?.trim() ?? ''
 
-  return {
-    name: form.value.name,
+  const payload = {
+    name: primaryName,
     email: form.value.email,
     _replyto: form.value.email,
-    _subject: `${rsvp.subject}: ${form.value.name}`,
+    _subject: `${rsvp.subject}: ${primaryName}`,
     attending,
-    mainCourse: form.value.attending === 'yes' ? form.value.mainCourse : '',
-    guests: form.value.attending === 'yes' ? form.value.guests : 0,
     message: form.value.message || rsvp.noMessage,
   }
+
+  if (form.value.attending !== 'yes') {
+    payload.guestCount = 0
+    return payload
+  }
+
+  payload.guestCount = form.value.guestCount
+  payload.guestsDetails = form.value.guests
+    .map(
+      (guest, index) =>
+        `${index + 1}. ${guest.name.trim()} — ${courseLabel(guest.mainCourse)} — ${ageLabel(guest.ageGroup)}`,
+    )
+    .join('\n')
+
+  form.value.guests.forEach((guest, index) => {
+    const n = index + 1
+    payload[`guest_${n}_name`] = guest.name.trim()
+    payload[`guest_${n}_mainCourse`] = courseLabel(guest.mainCourse)
+    payload[`guest_${n}_ageGroup`] = ageLabel(guest.ageGroup)
+  })
+
+  return payload
 }
 
 async function handleSubmit() {
@@ -81,11 +138,6 @@ async function handleSubmit() {
 
     <form v-else class="rsvp__form" @submit.prevent="handleSubmit">
       <label>
-        {{ t.rsvp.fullName }}
-        <input v-model="form.name" type="text" required />
-      </label>
-
-      <label>
         {{ t.rsvp.email }}
         <input v-model="form.email" type="email" required />
       </label>
@@ -101,26 +153,56 @@ async function handleSubmit() {
           {{ t.rsvp.attendingNo }}
         </label>
       </fieldset>
-      <fieldset v-if="form.attending === 'yes'">
-        <legend>{{ t.rsvp.mainCourse }}</legend>
-        <label class="rsvp__radio">
-          <input v-model="form.mainCourse" type="radio" value="fish" />
-          {{ t.rsvp.fish }}
-        </label>
-        <label class="rsvp__radio">
-          <input v-model="form.mainCourse" type="radio" value="meat" />
-          {{ t.rsvp.meat }}
-        </label>
-        <label class="rsvp__radio">
-          <input v-model="form.mainCourse" type="radio" value="vegetarian" />
-          {{ t.rsvp.vegetarian }}
-        </label>
-      </fieldset>
 
-      <label v-if="form.attending === 'yes'">
-        {{ t.rsvp.guests }}
-        <input v-model.number="form.guests" type="number" min="1" max="10" />
-      </label>
+      <template v-if="form.attending === 'yes'">
+        <label>
+          {{ t.rsvp.guests }}
+          <input v-model.number="form.guestCount" type="number" min="1" max="10" required />
+        </label>
+
+        <fieldset
+          v-for="(guest, index) in form.guests"
+          :key="index"
+          class="rsvp__guest"
+        >
+          <legend>{{ guestLabel(index) }}</legend>
+
+          <label>
+            {{ t.rsvp.guestName }}
+            <input v-model="guest.name" type="text" required />
+          </label>
+
+          <fieldset class="rsvp__guest-fieldset">
+            <legend>{{ t.rsvp.mainCourse }}</legend>
+            <label class="rsvp__radio">
+              <input v-model="guest.mainCourse" type="radio" value="fish" />
+              {{ t.rsvp.fish }}
+            </label>
+            <label class="rsvp__radio">
+              <input v-model="guest.mainCourse" type="radio" value="meat" />
+              {{ t.rsvp.meat }}
+            </label>
+            <label class="rsvp__radio">
+              <input v-model="guest.mainCourse" type="radio" value="vegetarian" />
+              {{ t.rsvp.vegetarian }}
+            </label>
+          </fieldset>
+
+          <fieldset class="rsvp__guest-fieldset">
+            <legend>{{ t.rsvp.ageGroup }}</legend>
+            <label class="rsvp__radio">
+              <input v-model="guest.ageGroup" type="radio" value="adult" />
+              {{ t.rsvp.adult }}
+            </label>
+            <label class="rsvp__radio">
+              <input v-model="guest.ageGroup" type="radio" value="child" />
+              {{ t.rsvp.child }}
+            </label>
+          </fieldset>
+        </fieldset>
+
+        <p class="rsvp__child-note">{{ t.rsvp.childMenuNote }}</p>
+      </template>
 
       <label>
         {{ t.rsvp.message }}
@@ -208,6 +290,27 @@ async function handleSubmit() {
 
 .rsvp__form legend {
   margin-bottom: 0.35rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.rsvp__guest {
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.rsvp__guest-fieldset {
+  margin-top: 0.25rem;
+}
+
+.rsvp__child-note {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--color-text-muted);
 }
 
 .rsvp__radio {
@@ -227,19 +330,9 @@ async function handleSubmit() {
   color: var(--color-text-muted);
 }
 
-.rsvp__config-hint {
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--color-text-muted);
-}
-
 .rsvp__error {
   text-align: center;
   font-size: 0.85rem;
   color: #b42318;
-}
-
-.rsvp__config-hint code {
-  font-size: 0.75rem;
 }
 </style>
