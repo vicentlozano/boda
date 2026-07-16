@@ -39,6 +39,6 @@ export const wedding = {
   },
 
   rsvp: {
-    formspreeId: 'xykrgban',
+    web3formsAccessKey: 'd4791d80-0cfd-4919-bee5-20a355ac6b5a',
   },
 }

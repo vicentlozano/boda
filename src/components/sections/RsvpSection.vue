@@ -89,10 +89,10 @@ function buildPayload() {
   const primaryName = form.value.guests[0]?.name?.trim() ?? ''
 
   const payload = {
+    access_key: wedding.rsvp.web3formsAccessKey,
     name: primaryName,
     email: form.value.email,
-    _replyto: form.value.email,
-    _subject: `${rsvp.subject}: ${primaryName}`,
+    subject: `${rsvp.subject}: ${primaryName}`,
     attending,
     message: form.value.message || rsvp.noMessage,
   }
@@ -124,26 +124,27 @@ function buildPayload() {
 }
 
 async function handleSubmit() {
-  if (!wedding.rsvp.formspreeId) return
+  if (!wedding.rsvp.web3formsAccessKey) return
 
   submitting.value = true
   errorMessage.value = ''
 
   try {
-    const response = await fetch(`https://formspree.io/f/${wedding.rsvp.formspreeId}`, {
+    const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(buildPayload()),
     })
 
-    if (response.ok) {
+    const data = await response.json().catch(() => ({}))
+
+    if (response.ok && data.success) {
       submitted.value = true
       showForm.value = false
       return
     }
 
-    const data = await response.json().catch(() => ({}))
-    errorMessage.value = data.error || t.value.rsvp.errorSubmit
+    errorMessage.value = data.message || t.value.rsvp.errorSubmit
   } catch {
     errorMessage.value = t.value.rsvp.errorConnection
   } finally {
