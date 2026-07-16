@@ -12,7 +12,7 @@ const submitting = ref(false)
 const errorMessage = ref('')
 
 function createGuest() {
-  return { name: '', mainCourse: 'fish', ageGroup: 'adult' }
+  return { name: '', mainCourse: 'fish', meatDoneness: 'medium', ageGroup: 'adult' }
 }
 
 const maxGuests = 10
@@ -59,6 +59,30 @@ function ageLabel(value) {
   return value === 'child' ? t.value.rsvp.child : t.value.rsvp.adult
 }
 
+function donenessLabel(value) {
+  const labels = {
+    rare: t.value.rsvp.meatRare,
+    medium: t.value.rsvp.meatMedium,
+    well: t.value.rsvp.meatWell,
+  }
+  return labels[value] ?? value
+}
+
+function guestDetailsLine(guest, index) {
+  const parts = [`${index + 1}. ${guest.name.trim()}`, ageLabel(guest.ageGroup)]
+
+  if (guest.ageGroup === 'adult') {
+    parts.push(courseLabel(guest.mainCourse))
+    if (guest.mainCourse === 'meat') {
+      parts.push(donenessLabel(guest.meatDoneness))
+    }
+  } else {
+    parts.push(t.value.rsvp.childMenuValue)
+  }
+
+  return parts.join(' — ')
+}
+
 function buildPayload() {
   const rsvp = t.value.rsvp
   const attending = form.value.attending === 'yes' ? rsvp.attendingYesValue : rsvp.attendingNoValue
@@ -79,18 +103,21 @@ function buildPayload() {
   }
 
   payload.guestCount = form.value.guestCount
-  payload.guestsDetails = form.value.guests
-    .map(
-      (guest, index) =>
-        `${index + 1}. ${guest.name.trim()} — ${courseLabel(guest.mainCourse)} — ${ageLabel(guest.ageGroup)}`,
-    )
-    .join('\n')
+  payload.guestsDetails = form.value.guests.map(guestDetailsLine).join('\n')
 
   form.value.guests.forEach((guest, index) => {
     const n = index + 1
     payload[`guest_${n}_name`] = guest.name.trim()
-    payload[`guest_${n}_mainCourse`] = courseLabel(guest.mainCourse)
     payload[`guest_${n}_ageGroup`] = ageLabel(guest.ageGroup)
+
+    if (guest.ageGroup === 'adult') {
+      payload[`guest_${n}_mainCourse`] = courseLabel(guest.mainCourse)
+      if (guest.mainCourse === 'meat') {
+        payload[`guest_${n}_meatDoneness`] = donenessLabel(guest.meatDoneness)
+      }
+    } else {
+      payload[`guest_${n}_mainCourse`] = t.value.rsvp.childMenuValue
+    }
   })
 
   return payload
@@ -180,22 +207,6 @@ async function handleSubmit() {
           </label>
 
           <fieldset class="rsvp__guest-fieldset">
-            <legend>{{ t.rsvp.mainCourse }}</legend>
-            <label class="rsvp__radio">
-              <input v-model="guest.mainCourse" type="radio" value="fish" />
-              {{ t.rsvp.fish }}
-            </label>
-            <label class="rsvp__radio">
-              <input v-model="guest.mainCourse" type="radio" value="meat" />
-              {{ t.rsvp.meat }}
-            </label>
-            <label class="rsvp__radio">
-              <input v-model="guest.mainCourse" type="radio" value="vegetarian" />
-              {{ t.rsvp.vegetarian }}
-            </label>
-          </fieldset>
-
-          <fieldset class="rsvp__guest-fieldset">
             <legend>{{ t.rsvp.ageGroup }}</legend>
             <label class="rsvp__radio">
               <input v-model="guest.ageGroup" type="radio" value="adult" />
@@ -206,6 +217,40 @@ async function handleSubmit() {
               {{ t.rsvp.child }}
             </label>
           </fieldset>
+
+          <template v-if="guest.ageGroup === 'adult'">
+            <fieldset class="rsvp__guest-fieldset">
+              <legend>{{ t.rsvp.mainCourse }}</legend>
+              <label class="rsvp__radio">
+                <input v-model="guest.mainCourse" type="radio" value="fish" />
+                {{ t.rsvp.fish }}
+              </label>
+              <label class="rsvp__radio">
+                <input v-model="guest.mainCourse" type="radio" value="meat" />
+                {{ t.rsvp.meat }}
+              </label>
+              <label class="rsvp__radio">
+                <input v-model="guest.mainCourse" type="radio" value="vegetarian" />
+                {{ t.rsvp.vegetarian }}
+              </label>
+            </fieldset>
+
+            <fieldset v-if="guest.mainCourse === 'meat'" class="rsvp__guest-fieldset">
+              <legend>{{ t.rsvp.meatDoneness }}</legend>
+              <label class="rsvp__radio">
+                <input v-model="guest.meatDoneness" type="radio" value="rare" />
+                {{ t.rsvp.meatRare }}
+              </label>
+              <label class="rsvp__radio">
+                <input v-model="guest.meatDoneness" type="radio" value="medium" />
+                {{ t.rsvp.meatMedium }}
+              </label>
+              <label class="rsvp__radio">
+                <input v-model="guest.meatDoneness" type="radio" value="well" />
+                {{ t.rsvp.meatWell }}
+              </label>
+            </fieldset>
+          </template>
         </fieldset>
 
         <p class="rsvp__child-note">{{ t.rsvp.childMenuNote }}</p>
